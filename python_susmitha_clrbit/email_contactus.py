@@ -19,11 +19,12 @@ import time
 #https://docs.google.com/spreadsheets/d/1EaSqU0HgAykgIr1se49t6_xwaHoA3kB8ex84781h-io/edit?usp=sharing
 # https://docs.google.com/spreadsheets/d/1Gyw5THssc8FqCSqXqni8FHp1_pLjmMHDa6m3Ba501Yk/edit?usp=sharing
 # https://docs.google.com/spreadsheets/d/19U9hMr995HcNIUYL0ij8xRn37xz2yZxI_uasQFDizRM/edit?usp=sharing
+# https://docs.google.com/spreadsheets/d/1meboQWv-2OMnM328b2BGGseG9bUcR6KZ9PeMTgVBMI0/edit?usp=sharing
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 #SAMPLE_SPREADSHEET_ID = '1EaSqU0HgAykgIr1se49t6_xwaHoA3kB8ex84781h-io' #sandeep.dev.511@gmail.com
-SAMPLE_SPREADSHEET_ID = '1T4oTT9aTbau76B9wAcx_t21COgMSM_Cq3_Ec2Mc5cUs' #chsandeep511@gmail.com
+SAMPLE_SPREADSHEET_ID = '1meboQWv-2OMnM328b2BGGseG9bUcR6KZ9PeMTgVBMI0' #chsandeep511@gmail.com
 
 searchDomain_ = []
 contactURLs = []
@@ -62,18 +63,18 @@ def readSheets(sheet):
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet7!A102:AA401' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet9!A2:AA100' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
     return values
 
 
-#update Domain Email List URLS
+#update Domain Email List URLS =-> Cell K -->Site Emails
 def updateToSheetsWithEmails(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet7!K102:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet9!K2:AA100' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -99,7 +100,7 @@ def updateToSheetsWithEmails(sheet):
 def updateToSheetsWithContactUsUrls(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet7!L102:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet9!L2:AA100' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -121,6 +122,10 @@ def updateToSheetsWithContactUsUrls(sheet):
     print(response)
 
 
+def valid_email(email):
+  return bool(re.search(r"\"?([-a-zA-Z0-9.`?{}]+@\w+\.\w+)\"?", email))#r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$
+
+
 def getContactUs(unscraped):
     emails = set()
     while len(unscraped):
@@ -138,7 +143,7 @@ def getContactUs(unscraped):
 
         try:
             #print("try")
-            response = requests.get(url, timeout=10)# 10 seconds
+            response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=10)# 10 seconds
         except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.TooManyRedirects):
             print("except")
             overQuota.append("Error")
@@ -147,6 +152,16 @@ def getContactUs(unscraped):
 
         new_emails = set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+", response.text, re.I)) # should not allow duplicates so using Set
         emails.update(new_emails)
+        #print(emails)
+        my_email = set()
+        for e in new_emails:
+            if valid_email(e):
+                my_email.add(e)
+                #print(e)
+
+        #print(my_email)
+        #print(emails)
+
         overQuota.append(str(list(emails)))
 
 
@@ -160,7 +175,8 @@ def getContactUs(unscraped):
           if "href" in anchor.attrs:
             link = anchor.attrs["href"]
             #print(link)
-            if (link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('kontakty') != -1):
+
+            if (('Kontakt' in anchor) or link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1):
                 # resolve relative links (starting with /)
                 #print("found")
                 if link.startswith('/'):
@@ -189,7 +205,7 @@ def getContactUs(unscraped):
               if not link in unscraped and not link in scraped:
                   unscraped.append(link)
             #print(link)
-            if (link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('kontakty') != -1):
+            if (link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1):
                 print(link)
                 print("else block 193")
         #print(contact_link)
@@ -240,7 +256,7 @@ def main():
 
     updateToSheetsWithContactUsUrls(sheet)
     updateToSheetsWithEmails(sheet)
-    
+
     print("It has been {0} seconds since the loop started".format(now - program_starts))
 
 if __name__ == '__main__':

@@ -22,7 +22,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 #SAMPLE_SPREADSHEET_ID = '1EaSqU0HgAykgIr1se49t6_xwaHoA3kB8ex84781h-io' #sandeep.dev.511@gmail.com
-SAMPLE_SPREADSHEET_ID = '1T4oTT9aTbau76B9wAcx_t21COgMSM_Cq3_Ec2Mc5cUs' #chsandeep511@gmail.com
+SAMPLE_SPREADSHEET_ID = '1meboQWv-2OMnM328b2BGGseG9bUcR6KZ9PeMTgVBMI0' #chsandeep511@gmail.com
 
 searchDomain_ = []
 overQuota = []
@@ -58,7 +58,7 @@ def readSheets(sheet):
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet8!A2:AA101' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet2!A2:AA101' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
@@ -68,7 +68,7 @@ def readSheets(sheet):
 def updateToSheets(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet8!K2:AA101' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet2!K2:AA101' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -89,6 +89,10 @@ def updateToSheets(sheet):
     request = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=range_, valueInputOption=value_input_option, body=value_range_body)
     response = request.execute()
     print(response)
+
+
+def valid_email(email):
+  return bool(re.search(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", email))
 
 
 def fetchEmailList(unscraped):
@@ -117,6 +121,7 @@ def fetchEmailList(unscraped):
             continue
 
         new_emails = set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+", response.text, re.I)) # should not allow duplicates so using Set
+
         emails.update(new_emails)
         overQuota.append(str(list(emails)))
 
@@ -139,7 +144,7 @@ def fetchEmailList(unscraped):
               if not link in unscraped and not link in scraped:
                   unscraped.append(link)
 
-    #print(emails)
+    print(emails)
     #overQuota.append(str(emails))
 
 def main():
@@ -178,7 +183,7 @@ def main():
 
     print(overQuota)
 
-    updateToSheets(sheet)
+    #updateToSheets(sheet)
 
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 # The ID and range of a sample spreadsheet.
 #SAMPLE_SPREADSHEET_ID = '1EaSqU0HgAykgIr1se49t6_xwaHoA3kB8ex84781h-io' #sandeep.dev.511@gmail.com
 #https://docs.google.com/spreadsheets/d/1T4oTT9aTbau76B9wAcx_t21COgMSM_Cq3_Ec2Mc5cUs
-SAMPLE_SPREADSHEET_ID = '1T4oTT9aTbau76B9wAcx_t21COgMSM_Cq3_Ec2Mc5cUs' #chsandeep511@gmail.com
+SAMPLE_SPREADSHEET_ID = '1meboQWv-2OMnM328b2BGGseG9bUcR6KZ9PeMTgVBMI0' #chsandeep511@gmail.com
 
 searchDomain_ = []
 overQuota = []
@@ -49,7 +49,7 @@ def readSheets(sheet):
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet7!A102:AA401' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet9!A2:AA501' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
@@ -59,7 +59,7 @@ def readSheets(sheet):
 def updateToSheets(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet7!J102:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet9!J2:AA501' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -85,7 +85,7 @@ def updateToSheets(sheet):
 def fetch(session, domainURL):
 
     #TODO://update Token when you get Over_quota: Susmitha
-    headers = {"Authorization": "Bearer sk_5765df7a9a50c45452111a290df9e80d"}
+    headers = {"Authorization": "Bearer sk_9ace7323fba74819ddc443dc018a7fe6"}
     with session.get(domainURL, headers=headers,) as response:
         if response.status_code == 200:
             data = json.loads(response.content)

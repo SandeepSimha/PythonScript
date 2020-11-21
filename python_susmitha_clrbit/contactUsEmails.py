@@ -23,7 +23,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 #SAMPLE_SPREADSHEET_ID = '1EaSqU0HgAykgIr1se49t6_xwaHoA3kB8ex84781h-io' #sandeep.dev.511@gmail.com
-SAMPLE_SPREADSHEET_ID = '1T4oTT9aTbau76B9wAcx_t21COgMSM_Cq3_Ec2Mc5cUs' #chsandeep511@gmail.com
+SAMPLE_SPREADSHEET_ID = '1meboQWv-2OMnM328b2BGGseG9bUcR6KZ9PeMTgVBMI0' #chsandeep511@gmail.com
 
 searchDomain_ = []
 overQuota = []
@@ -60,7 +60,7 @@ def readSheets(sheet):
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet7!L102:AA401' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet9!L2:AA501' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
@@ -70,7 +70,7 @@ def readSheets(sheet):
 def updateToSheets(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet7!M102:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet9!M2:AA501' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -94,7 +94,7 @@ def updateToSheets(sheet):
 def updateToSheetsIsFrom(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet7!N102:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet9!N2:AA541' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -107,7 +107,7 @@ def updateToSheetsIsFrom(sheet):
     value_range_body = {
         #For output, if the spreadsheet data is: A1=1,B1=2,A2=3,B2=4, then requesting range=A1:B2,majorDimension=ROWS will return [[1,2],[3,4]],
         # whereas requesting range=A1:B2,majorDimension=COLUMNS will return [[1,3],[2,4]].
-        'values': [isForm],#overQuota#isForm
+        'values': [isForm],
         "majorDimension": "COLUMNS"
     }
 
@@ -133,7 +133,7 @@ def fetchEmailList(unscraped, sheet):
 
 
         try:
-            response = requests.get(url, timeout=10)# 10 seconds
+            response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=10)# 10 seconds
         except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError, requests.exceptions.Timeout):
             print("except")
             isForm.append("Error")
@@ -221,8 +221,8 @@ def main():
 
     #print(overQuota)
 
-    #updateToSheets(sheet)
-    #updateToSheetsIsFrom(sheet)
+    updateToSheets(sheet)
+    updateToSheetsIsFrom(sheet)
     print("It has been {0} seconds since the loop started".format(now - program_starts))
 
 
