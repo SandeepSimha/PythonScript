@@ -77,7 +77,7 @@ def readSheets(sheet):
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet10!P154:AA155' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet10!P158:AA160' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
@@ -98,7 +98,7 @@ def openChromeDriver(to_, subject_, composebody_):
     username_input = '//*[@id="user"]'
     password_input = '//*[@id="pass"]'
     login_submit = '//*[@id="login_submit"]'
-    #driver.find_element_by_xpath(first_login).click()
+    
     driver.find_element_by_xpath(username_input).send_keys("stewardsmike@trafficluxury.com")#stewardsmike@trafficluxury.com
     driver.find_element_by_xpath(password_input).send_keys("stewardsmike34")
     driver.find_element_by_xpath(login_submit).click()
@@ -157,20 +157,13 @@ def main():
                 searchDomain_.append(row)
             else:
                 searchDomain_.append(row[0])
-                #print("Subject: %s" % row)
-                print(item, row[3]) #row[0]--> Subject;; row[1]--> composebody;; row[3]--> sender_to_
-                if row[3].find("Not Found,,") != -1:
-                    print("ignore")
-                elif row[3].find("Error,Error,") != -1:
+                print("Email: %s" % row[3])
+                #print(item, row[3]) #row[0]--> Subject;; row[1]--> composebody;; row[3]--> sender_to_
+                if row[3].find("Not Found,,") != -1 or row[3].find("Error,Error,") != -1 or row[3].find("Error,,") != -1 or row[3].find("Error,,Error") != -1:
                     print("ignore")
                 else :
-                    result = [x.strip() for x in row[3].split(',')]
-                    for e in result:
-                        #print()
-                        if valid_email(e):
-                            result.remove(e) # here
-                    print(''.join(result))
-                    #openChromeDriver(row[3], row[0], row[1])
+                    #print(row[3])
+                    openChromeDriver(row[3], row[0], row[1])
                     #print(result)
 
 
