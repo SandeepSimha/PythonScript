@@ -21,8 +21,6 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 
-
-
 import pickle
 import os.path
 from googleapiclient.discovery import build
@@ -38,8 +36,6 @@ import pandas as pd
 from google.colab import files
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-
-
 SAMPLE_SPREADSHEET_ID = '1meboQWv-2OMnM328b2BGGseG9bUcR6KZ9PeMTgVBMI0' #chsandeep511@gmail.com
 
 searchDomain_ = []
@@ -98,13 +94,12 @@ def openChromeDriver(to_, subject_, composebody_):
     username_input = '//*[@id="user"]'
     password_input = '//*[@id="pass"]'
     login_submit = '//*[@id="login_submit"]'
-    
+
     driver.find_element_by_xpath(username_input).send_keys("stewardsmike@trafficluxury.com")#stewardsmike@trafficluxury.com
     driver.find_element_by_xpath(password_input).send_keys("stewardsmike34")
     driver.find_element_by_xpath(login_submit).click()
     driver.maximize_window()
     time.sleep(2)
-    print("Window has been opened")
 
     driver.find_element_by_xpath('//*[@id="rcmbtn107"]').click()
     print("Navigating to Next Page")
@@ -137,15 +132,8 @@ def main():
     # [START sheets_get_values]
     sheet = initializeSheets()
     values = readSheets(sheet)
-    #description = readSheetsDescription(sheet)
-    #senderEmail = readSheetSenderEmail(sheet)
-
     print('{0} rows retrieved.'.format(len(values)))
-    #print('{0} rows retrieved.'.format(len(description)))
-    #print('{0} rows retrieved.'.format(len(senderEmail)))
     # [END sheets_get_values]
-
-    #print("Subject: %s" % values)
 
     if not values:
         print('No data found.')
@@ -165,7 +153,6 @@ def main():
                     #print(row[3])
                     openChromeDriver(row[3], row[0], row[1])
                     #print(result)
-
 
 
 
