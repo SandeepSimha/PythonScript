@@ -19,15 +19,18 @@ import time
 #https://docs.google.com/spreadsheets/d/1EaSqU0HgAykgIr1se49t6_xwaHoA3kB8ex84781h-io/edit?usp=sharing
 # https://docs.google.com/spreadsheets/d/1Gyw5THssc8FqCSqXqni8FHp1_pLjmMHDa6m3Ba501Yk/edit?usp=sharing
 # https://docs.google.com/spreadsheets/d/19U9hMr995HcNIUYL0ij8xRn37xz2yZxI_uasQFDizRM/edit?usp=sharing
-# https://docs.google.com/spreadsheets/d/1meboQWv-2OMnM328b2BGGseG9bUcR6KZ9PeMTgVBMI0/edit?usp=sharing
+# https://docs.google.com/spreadsheets/d/1XawJviNBBUJdoMmepxbZKG9Coa0yaVEfDl2xb8TIPEI/edit?usp=sharing
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 #SAMPLE_SPREADSHEET_ID = '1EaSqU0HgAykgIr1se49t6_xwaHoA3kB8ex84781h-io' #sandeep.dev.511@gmail.com
-SAMPLE_SPREADSHEET_ID = '1meboQWv-2OMnM328b2BGGseG9bUcR6KZ9PeMTgVBMI0' #chsandeep511@gmail.com
+SAMPLE_SPREADSHEET_ID = '1_r4da-8nTEwpOLs64dIksoD9xZEiLCFfucidEf70P8g' #chsandeep511@gmail.com
 
 searchDomain_ = []
 contactURLs = []
+impressumURLs = []
+aboutURLs = []
+instaURLs = []
 overQuota = []
 
 scraped = set()
@@ -63,7 +66,7 @@ def readSheets(sheet):
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet9!A2:AA100' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet15!A2:AA300' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
@@ -74,7 +77,7 @@ def readSheets(sheet):
 def updateToSheetsWithEmails(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet9!K2:AA100' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet15!K2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -100,7 +103,7 @@ def updateToSheetsWithEmails(sheet):
 def updateToSheetsWithContactUsUrls(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet9!L2:AA100' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet15!L2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -114,6 +117,79 @@ def updateToSheetsWithContactUsUrls(sheet):
         #For output, if the spreadsheet data is: A1=1,B1=2,A2=3,B2=4, then requesting range=A1:B2,majorDimension=ROWS will return [[1,2],[3,4]],
         # whereas requesting range=A1:B2,majorDimension=COLUMNS will return [[1,3],[2,4]].
         'values': [contactURLs],
+        "majorDimension": "COLUMNS"
+    }
+
+    request = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=range_, valueInputOption=value_input_option, body=value_range_body)
+    response = request.execute()
+    print(response)
+
+def updateToSheetsWithAboutUsUrls(sheet):
+
+    #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
+    range_ = 'Sheet15!N2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+
+    print("*********************************************************************************************************")
+    print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
+    print('updating to Sheets: %s' % (range_))
+    print()
+
+    # How the input data should be interpreted.
+    value_input_option = 'USER_ENTERED'
+
+    value_range_body = {
+        #For output, if the spreadsheet data is: A1=1,B1=2,A2=3,B2=4, then requesting range=A1:B2,majorDimension=ROWS will return [[1,2],[3,4]],
+        # whereas requesting range=A1:B2,majorDimension=COLUMNS will return [[1,3],[2,4]].
+        'values': [aboutURLs],
+        "majorDimension": "COLUMNS"
+    }
+
+    request = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=range_, valueInputOption=value_input_option, body=value_range_body)
+    response = request.execute()
+    print(response)
+
+def updateToSheetsWithImpreesumUrls(sheet):
+
+    #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
+    range_ = 'Sheet15!P2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+
+    print("*********************************************************************************************************")
+    print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
+    print('updating to Sheets: %s' % (range_))
+    print()
+
+    # How the input data should be interpreted.
+    value_input_option = 'USER_ENTERED'
+
+    value_range_body = {
+        #For output, if the spreadsheet data is: A1=1,B1=2,A2=3,B2=4, then requesting range=A1:B2,majorDimension=ROWS will return [[1,2],[3,4]],
+        # whereas requesting range=A1:B2,majorDimension=COLUMNS will return [[1,3],[2,4]].
+        'values': [impressumURLs],
+        "majorDimension": "COLUMNS"
+    }
+
+    request = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=range_, valueInputOption=value_input_option, body=value_range_body)
+    response = request.execute()
+    print(response)
+
+
+def updateToSheetsWithInstagramUrls(sheet):
+
+    #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
+    range_ = 'Sheet15!T2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+
+    print("*********************************************************************************************************")
+    print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
+    print('updating to Sheets: %s' % (range_))
+    print()
+
+    # How the input data should be interpreted.
+    value_input_option = 'USER_ENTERED'
+
+    value_range_body = {
+        #For output, if the spreadsheet data is: A1=1,B1=2,A2=3,B2=4, then requesting range=A1:B2,majorDimension=ROWS will return [[1,2],[3,4]],
+        # whereas requesting range=A1:B2,majorDimension=COLUMNS will return [[1,3],[2,4]].
+        'values': [instaURLs],
         "majorDimension": "COLUMNS"
     }
 
@@ -148,35 +224,33 @@ def getContactUs(unscraped):
             print("except")
             overQuota.append("Error")
             contactURLs.append("Error")
+            impressumURLs.append("Error")
+            aboutURLs.append("Error")
+            instaURLs.append("Error")
             continue
 
         new_emails = set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+", response.text, re.I)) # should not allow duplicates so using Set
         emails.update(new_emails)
-        #print(emails)
-        my_email = set()
-        for e in new_emails:
-            if valid_email(e):
-                my_email.add(e)
-                #print(e)
-
-        #print(my_email)
-        #print(emails)
 
         overQuota.append(str(list(emails)))
 
 
         soup = BeautifulSoup(response.text, 'lxml')
         contact_link = ""
+        impressum_link = ""
+        about_link = ""
+        insta_link = ""
         #print(soup)
 
         for anchor in soup.find_all("a"):
           #print(anchor)
             # extract linked url from the anchor
+            # Look for About Page
           if "href" in anchor.attrs:
             link = anchor.attrs["href"]
             #print(link)
 
-            if (('Kontakt' in anchor) or link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1):
+            if ((link.find('About') != -1) or (link.find('about') != -1)):
                 # resolve relative links (starting with /)
                 #print("found")
                 if link.startswith('/'):
@@ -188,7 +262,7 @@ def getContactUs(unscraped):
                     link = base_url + '/' + link
                     print("else found %s" % link)
 
-                contact_link = link
+                about_link = link
                 continue
 
           else:
@@ -205,11 +279,114 @@ def getContactUs(unscraped):
               if not link in unscraped and not link in scraped:
                   unscraped.append(link)
             #print(link)
-            if (link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1):
+            if ((link.find('About') != -1) or (link.find('about') != -1)):
                 print(link)
+                about_link = link
                 print("else block 193")
-        #print(contact_link)
+
+          # Look for Contact US Page or Imprussm
+          if "href" in anchor.attrs:
+            link = anchor.attrs["href"]
+            #print("in href")
+
+            if (('Kontakt' in anchor) or link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1):
+                # resolve relative links (starting with /)
+                #print("found")
+                if link.startswith('/'):
+                    #print("startswith/")
+                    link = base_url + link
+                    print("if found %s" % link)
+                elif link.startswith('http'):
+                    print("http found %s" % link)
+                else:
+                    link = base_url + '/' + link
+                    print("else found %s" % link)
+
+                contact_link = link
+                continue
+
+            if (link.find('IMPRESSUM') != -1) or (link.find('impressum') != -1) or (link.find('Impressum') != -1):
+                if link.startswith('/'):
+                    #print("startswith/")
+                    link = base_url + link
+                    print("if found %s" % link)
+                elif link.startswith('http'):
+                    print("http found %s" % link)
+                else:
+                    link = base_url + '/' + link
+                    print("else found %s" % link)
+
+                impressum_link = link
+                continue
+
+          else:
+            #print(" else - not an href")
+            link = ''
+            # resolve relative links (starting with /)
+            if link.startswith('/'):
+                link = base_url + link
+                #print("startswith - / %s" % link)
+
+            elif not link.startswith('http'):
+                link = path + link
+                #print("startswith - http %s" % link)
+
+            if not link.endswith(".gz"):
+              if not link in unscraped and not link in scraped:
+                  unscraped.append(link)
+            #print(link)
+            if (('Kontakt' in anchor) or link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1):
+                print(link)
+                contact_link = link
+                print("else block 193")
+
+
+            if (link.find('IMPRESSUM') != -1) or (link.find('impressum') != -1) or (link.find('Impressum') != -1):
+                print(link)
+                impressum_link = link
+                print("else block 193")
+
+          if "href" in anchor.attrs:
+            link = anchor.attrs["href"]
+            #print(link)
+            if ((link.find('insta') != -1) or (link.find('Insta') != -1)):
+                # resolve relative links (starting with /)
+                #print("found")
+                if link.startswith('/'):
+                    #print("startswith/")
+                    link = base_url + link
+                elif link.startswith('http'):
+                    print("http found %s" % link)
+                else:
+                    link = base_url + '/' + link
+                    print("else found %s" % link)
+
+                insta_link = link
+                continue
+
+          else:
+            #print("else")
+            link = ''
+            # resolve relative links (starting with /)
+            if link.startswith('/'):
+                link = base_url + link
+
+            elif not link.startswith('http'):
+                link = path + link
+
+            if not link.endswith(".gz"):
+              if not link in unscraped and not link in scraped:
+                  unscraped.append(link)
+            #print(link)
+            if ((link.find('Insta') != -1) or (link.find('insta') != -1)):
+                print(link)
+                insta_link = link
+                print("else block 193")
+
         contactURLs.append(contact_link)
+        impressumURLs.append(impressum_link)
+        aboutURLs.append(about_link)
+        instaURLs.append(insta_link)
 
 
 def main():
@@ -240,22 +417,25 @@ def main():
     for original_url in searchDomain_:
         now = time.time()
 
-        print('Iteration Count: {0}'.format(count) + ", Crawling URL %s" % original_url)
+        print('{0}'.format(count) + ", Crawling URL %s" % original_url)
         count = count + 1
 
         if not original_url:#if URL is empty like []
             overQuota.append(str(original_url))
             contactURLs.append(str(original_url))
+            impressumURLs.append(str(original_url))
+            aboutURLs.append(str(original_url))
+            instaURLs.append(str(original_url))
         else:
             unscraped = deque([original_url])
             getContactUs(unscraped)
 
 
-    print(contactURLs)
-    #print(overQuota)
-
-    updateToSheetsWithContactUsUrls(sheet)
     updateToSheetsWithEmails(sheet)
+    updateToSheetsWithContactUsUrls(sheet)
+    updateToSheetsWithImpreesumUrls(sheet)
+    updateToSheetsWithAboutUsUrls(sheet)
+    updateToSheetsWithInstagramUrls(sheet)
 
     print("It has been {0} seconds since the loop started".format(now - program_starts))
 
