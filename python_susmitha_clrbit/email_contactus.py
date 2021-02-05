@@ -244,56 +244,14 @@ def getContactUs(unscraped):
 
         for anchor in soup.find_all("a"):
           #print(anchor)
-            # extract linked url from the anchor
-            # Look for About Page
+          # extract linked url from the anchor
+          # Look for Contact US Page or Imprussm or Instagram or About
           if "href" in anchor.attrs:
             link = anchor.attrs["href"]
-            #print(link)
-
-            if ((link.find('About') != -1) or (link.find('about') != -1)):
-                # resolve relative links (starting with /)
-                #print("found")
-                if link.startswith('/'):
-                    #print("startswith/")
-                    link = base_url + link
-                elif link.startswith('http'):
-                    print("http found %s" % link)
-                else:
-                    link = base_url + '/' + link
-                    print("else found %s" % link)
-
-                about_link = link
-                continue
-
-          else:
-            #print("else")
-            link = ''
-            # resolve relative links (starting with /)
-            if link.startswith('/'):
-                link = base_url + link
-
-            elif not link.startswith('http'):
-                link = path + link
-
-            if not link.endswith(".gz"):
-              if not link in unscraped and not link in scraped:
-                  unscraped.append(link)
-            #print(link)
-            if ((link.find('About') != -1) or (link.find('about') != -1)):
-                print(link)
-                about_link = link
-                print("else block 193")
-
-          # Look for Contact US Page or Imprussm
-          if "href" in anchor.attrs:
-            link = anchor.attrs["href"]
-            #print("in href")
 
             if (('Kontakt' in anchor) or link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1):
                 # resolve relative links (starting with /)
-                #print("found")
                 if link.startswith('/'):
-                    #print("startswith/")
                     link = base_url + link
                     print("if found %s" % link)
                 elif link.startswith('http'):
@@ -307,7 +265,6 @@ def getContactUs(unscraped):
 
             if (link.find('IMPRESSUM') != -1) or (link.find('impressum') != -1) or (link.find('Impressum') != -1):
                 if link.startswith('/'):
-                    #print("startswith/")
                     link = base_url + link
                     print("if found %s" % link)
                 elif link.startswith('http'):
@@ -317,6 +274,30 @@ def getContactUs(unscraped):
                     print("else found %s" % link)
 
                 impressum_link = link
+                continue
+
+            if ((link.find('About') != -1) or (link.find('about') != -1)):
+                if link.startswith('/'):
+                    link = base_url + link
+                elif link.startswith('http'):
+                    print("http found %s" % link)
+                else:
+                    link = base_url + '/' + link
+                    print("else found %s" % link)
+
+                about_link = link
+                continue
+
+            if ((link.find('instagram') != -1) or (link.find('Instagram') != -1)):
+                if link.startswith('/'):
+                    link = base_url + link
+                elif link.startswith('http'):
+                    print("http found %s" % link)
+                else:
+                    link = base_url + '/' + link
+                    print("else found %s" % link)
+
+                insta_link = link
                 continue
 
           else:
@@ -325,62 +306,32 @@ def getContactUs(unscraped):
             # resolve relative links (starting with /)
             if link.startswith('/'):
                 link = base_url + link
-                #print("startswith - / %s" % link)
 
             elif not link.startswith('http'):
                 link = path + link
-                #print("startswith - http %s" % link)
 
             if not link.endswith(".gz"):
               if not link in unscraped and not link in scraped:
                   unscraped.append(link)
-            #print(link)
+
             if (('Kontakt' in anchor) or link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1):
                 print(link)
                 contact_link = link
                 print("else block 193")
-
 
             if (link.find('IMPRESSUM') != -1) or (link.find('impressum') != -1) or (link.find('Impressum') != -1):
                 print(link)
                 impressum_link = link
                 print("else block 193")
 
-          if "href" in anchor.attrs:
-            link = anchor.attrs["href"]
-            #print(link)
-            if ((link.find('insta') != -1) or (link.find('Insta') != -1)):
-                # resolve relative links (starting with /)
-                #print("found")
-                if link.startswith('/'):
-                    #print("startswith/")
-                    link = base_url + link
-                elif link.startswith('http'):
-                    print("http found %s" % link)
-                else:
-                    link = base_url + '/' + link
-                    print("else found %s" % link)
-
-                insta_link = link
-                continue
-
-          else:
-            #print("else")
-            link = ''
-            # resolve relative links (starting with /)
-            if link.startswith('/'):
-                link = base_url + link
-
-            elif not link.startswith('http'):
-                link = path + link
-
-            if not link.endswith(".gz"):
-              if not link in unscraped and not link in scraped:
-                  unscraped.append(link)
-            #print(link)
-            if ((link.find('Insta') != -1) or (link.find('insta') != -1)):
+            if ((link.find('instagram') != -1) or (link.find('Instagram') != -1)):
                 print(link)
                 insta_link = link
+                print("else block 193")
+
+            if ((link.find('About') != -1) or (link.find('about') != -1)):
+                print(link)
+                about_link = link
                 print("else block 193")
 
         contactURLs.append(contact_link)
