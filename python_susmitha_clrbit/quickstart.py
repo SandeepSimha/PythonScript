@@ -52,7 +52,7 @@ def readSheets(sheet):
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet15!A2:AA300' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet31!A2:AA401' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
@@ -62,7 +62,7 @@ def readSheets(sheet):
 def updateToSheets(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet15!R2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet31!R2:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -88,7 +88,7 @@ def updateToSheets(sheet):
 def fetch(session, domainURL):
 
     #TODO://update Token when you get Over_quota: Susmitha
-    headers = {"Authorization": "Bearer sk_092d7d3827f06284fa592a44319fa1f7"}
+    headers = {"Authorization": "Bearer sk_d65f6e634493e0ea8a7b14e300a381f3"}
     with session.get(domainURL, headers=headers,) as response:
         if response.status_code == 200:
             data = json.loads(response.content)

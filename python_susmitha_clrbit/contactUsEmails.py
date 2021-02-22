@@ -60,19 +60,19 @@ def readSheets(sheet):
     # TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet14!L142:AA300'  # Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet31!L2:AA401'  # Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
     return values
 
 
-# read sheet for ContactUsUrls
+# read sheet for ImpressumUsUrls
 def readImpressumSheets(sheet):
     # TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet14!P142:AA300'  # Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet31!P2:AA401'  # Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
@@ -84,7 +84,7 @@ def readAboutURlsFromSheets(sheet):
     # TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet14!N142:AA300'  # Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet31!N2:AA401'  # Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
@@ -94,7 +94,7 @@ def readAboutURlsFromSheets(sheet):
 # update sheet with ContactUsUrls emails
 def updateToSheets(sheet):
     # TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet14!M142:AA300'  # Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet31!M2:AA401'  # Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("**************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -116,10 +116,10 @@ def updateToSheets(sheet):
     response = request.execute()
     print(response)
 
-
+# update sheet with AboutUS emails
 def updateAboutUSEmailsToSheets(sheet):
     # TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet14!O142:AA300'  # Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet31!O2:AA401'  # Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("**************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -141,10 +141,10 @@ def updateAboutUSEmailsToSheets(sheet):
     response = request.execute()
     print(response)
 
-
+# update sheet with Impressum emails
 def updateImpressumEmailsToSheets(sheet):
     # TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet14!Q142:AA300'  # Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet31!Q2:AA401'  # Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print(
         "*********************************************************************************************************")
@@ -170,7 +170,7 @@ def updateImpressumEmailsToSheets(sheet):
 
 def updateToSheetsIsFrom(sheet):
     # TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet14!N2:AA140'  # Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet31!N2:AA140'  # Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print(
         "*********************************************************************************************************")
@@ -211,8 +211,8 @@ def fetchEmailList(unscraped, sheet):
             path = url
 
         try:
-            response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'},
-                                    timeout=10)  # 10 seconds
+            response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0 (X11; U; Linux i686; en-US;)'},timeout=10)  # 10 seconds
+            #print(response.text)
         except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError,
                 requests.exceptions.Timeout):
             print("except")
@@ -220,8 +220,7 @@ def fetchEmailList(unscraped, sheet):
             overQuota.append("Error")
             continue
 
-        new_emails = set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+", response.text,
-                                    re.I))  # should not allow duplicates so using Set case ignore
+        new_emails = set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+", response.text, re.I))  # should not allow duplicates so using Set case ignore
         emails.update(new_emails)
         overQuota.append(str(list(emails)))
         print(emails)
@@ -335,7 +334,7 @@ def main():
     aboutValues = readAboutURlsFromSheets(sheet)
     # print('{0} rows retrieved.'.format(len(values)))
     # print('{0} rows retrieved.'.format(len(aboutValues)))
-    print('{0} rows retrieved.'.format(len(impressumValues)))
+    #print('{0} rows retrieved.'.format(len(impressumValues)))
     # [END sheets_get_values]
 
     if not values:
@@ -420,7 +419,6 @@ def main():
             fetchEmailListForAbout(unscraped, sheet)
 
     updateToSheets(sheet)
-    # updateToSheetsIsFrom(sheet)
     updateAboutUSEmailsToSheets(sheet)
     updateImpressumEmailsToSheets(sheet)
 

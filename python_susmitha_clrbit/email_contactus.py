@@ -66,7 +66,7 @@ def readSheets(sheet):
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet15!A2:AA300' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet31!A2:AA401' #Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
@@ -77,7 +77,7 @@ def readSheets(sheet):
 def updateToSheetsWithEmails(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet15!K2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet31!K2:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -103,7 +103,7 @@ def updateToSheetsWithEmails(sheet):
 def updateToSheetsWithContactUsUrls(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet15!L2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet31!L2:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -127,7 +127,7 @@ def updateToSheetsWithContactUsUrls(sheet):
 def updateToSheetsWithAboutUsUrls(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet15!N2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet31!N2:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -151,7 +151,7 @@ def updateToSheetsWithAboutUsUrls(sheet):
 def updateToSheetsWithImpreesumUrls(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet15!P2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet31!P2:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -176,7 +176,7 @@ def updateToSheetsWithImpreesumUrls(sheet):
 def updateToSheetsWithInstagramUrls(sheet):
 
     #TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
-    range_ = 'Sheet15!T2:AA300' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
+    range_ = 'Sheet31!T2:AA401' #Should be same Row number at line 50: Here I am updating at Column 'J' 10th Row to 20th row
 
     print("*********************************************************************************************************")
     print("ఇది షీట్‌లకు నవీకరించబడుతుంది")
@@ -202,6 +202,28 @@ def valid_email(email):
   return bool(re.search(r"\"?([-a-zA-Z0-9.`?{}]+@\w+\.\w+)\"?", email))#r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$
 
 
+def get_phone(soup):
+    try:
+        phone = soup.select("a[href*=callto]")[0].text
+        return phone
+    except:
+        pass
+
+    try:
+        phone = re.findall(r'\(?\b[2-9][0-9]{2}\)?[-][2-9][0-9]{2}[-][0-9]{4}\b', response.text)[0]
+        return phone
+    except:
+        pass
+
+    try:
+       phone = re.findall(r'\(?\b[2-9][0-9]{2}\)?[-. ]?[2-9][0-9]{2}[-. ]?[0-9]{4}\b', response.text)[-1]
+       return phone
+    except:
+        print ('Phone number not found')
+        phone = ''
+        return phone
+
+
 def getContactUs(unscraped):
     emails = set()
     while len(unscraped):
@@ -219,8 +241,8 @@ def getContactUs(unscraped):
 
         try:
             #print("try")
-            response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=10)# 10 seconds
-        except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.TooManyRedirects):
+            response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0 (X11; U; Linux i686; en-US;)'}, timeout=10, allow_redirects=True)# 10 seconds
+        except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.TooManyRedirects, requests.exceptions.InvalidURL):
             print("except")
             overQuota.append("Error")
             contactURLs.append("Error")
@@ -233,6 +255,7 @@ def getContactUs(unscraped):
         emails.update(new_emails)
 
         overQuota.append(str(list(emails)))
+        print(str(list(emails)))
 
 
         soup = BeautifulSoup(response.text, 'lxml')
@@ -240,7 +263,8 @@ def getContactUs(unscraped):
         impressum_link = ""
         about_link = ""
         insta_link = ""
-        #print(soup)
+        links = []
+
 
         for anchor in soup.find_all("a"):
           #print(anchor)
@@ -249,7 +273,7 @@ def getContactUs(unscraped):
           if "href" in anchor.attrs:
             link = anchor.attrs["href"]
 
-            if (('Kontakt' in anchor) or link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1):
+            if (('Kontakt' in anchor) or link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1) or (link.find('YHTEYDENOTTO') != -1) or (link.find('Yhteystiedot') != -1) or (link.find('yhteystiedot') != -1):
                 # resolve relative links (starting with /)
                 if link.startswith('/'):
                     link = base_url + link
@@ -314,7 +338,7 @@ def getContactUs(unscraped):
               if not link in unscraped and not link in scraped:
                   unscraped.append(link)
 
-            if (('Kontakt' in anchor) or link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1):
+            if (('Kontakt' in anchor) or link.find('contatti') != -1) or (link.find('contact') != -1) or (link.find('contattaci') != -1) or (link.find('contattami') != -1) or (link.find('KONTAKT') != -1) or (link.find('kontakt') != -1) or (link.find('KONTAKTY') != -1) or (link.find('Kontakt') != -1) or (link.find('kontakty') != -1) or (link.find('Yhteystiedot') != -1) or (link.find('yhteystiedot') != -1) or (link.find('YHTEYDENOTTO') != -1):
                 print(link)
                 contact_link = link
                 print("else block 193")

@@ -52,7 +52,7 @@ def readSheets(sheet):
     # TODO:// Update with your Sheet number and from `where to where` you want to read the domian list: Susmitha
     # The A1 notation of the values to update.
     # start with A2 always
-    read_range_ = 'Sheet13!A91:AA300'  # Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
+    read_range_ = 'Sheet30!A204:AA401'  # Should be same Row number at line 60: Here I am reading at Column 'A' 10th Row to 20th row
 
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=read_range_).execute()
     values = result.get('values', [])
@@ -76,6 +76,7 @@ def composeMessageSend(driver, to_, subject_, composebody_):
     send_message_submit = '//*[@id="rcmbtn107"]'
     resend_message_submit = '/html/body/div[8]/div[3]/div/button[1]'
     resend_message_submit_again = '/html/body/div[9]/div[3]/div/button[1]'
+    invalid_email_address =  '/html/body/div[9]/div[2]'
 
     error_occured_view = '//*[@id="ui-id-19"]'
 
@@ -91,13 +92,20 @@ def composeMessageSend(driver, to_, subject_, composebody_):
         driver.find_element_by_xpath(resend_message_submit).click()
         time.sleep(3)
     except NoSuchElementException:
-        print("NoSuchElementException.")
+        print("resend_message_submit NoSuchElementException.")
 
     try:
         driver.find_element_by_xpath(resend_message_submit_again).click()
         time.sleep(3)
     except NoSuchElementException:
-        print("NoSuchElementException.")
+        print("Too Many Public Recipeints.")
+
+    try:
+        driver.find_element_by_xpath(invalid_email_address).click()
+        print("found invalid_email_address.")
+        driver.quit()
+    except NoSuchElementException:
+        print("invalid_email_address NoSuchElementException.")
 
     #driver.quit()
     print("quit.")
@@ -134,6 +142,7 @@ def main():
         return
     else:
         driver = openChromeDriver()
+        count = 1
         for item, row in enumerate(values, start=1):
             if not row:
                 print("List is empty")
@@ -149,6 +158,8 @@ def main():
                     #print("Email: %d" % item, row[20], row[22], row[23])
                     #driver, to_, subject_, composebody_
                     #driver, row[20], row[22], row[23]
+                    print('{0}'.format(count))
+                    count = count + 1
                     composeMessageSend(driver, row[20], row[22], row[23])
                     # print(result)
 
